@@ -6,7 +6,7 @@ To run this React projet just :<br>
 -`npx create-react-app folder-name`<br>
 -`cd folder-name`<br>
 -delete /public and /src folders<br>
--copy paste the ones here<br>
+-copy paste the folders and files here, in<br>
 -`npm start`<br>
 <br>
 
