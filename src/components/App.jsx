@@ -1,16 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import Note from "./Note";
-import notes from "../notes";
+import CreateArea from "./CreateArea";
 
 function App() {
+  const [notes, setNotes] = useState([]);
+
+  function addNote(note) {                                                               // le paramètre de la fonction est celui que l'on a passer dans onAdd(), à savoir (note), l'array de CreateArea.jsx est donc maintenant accessible dans App.jsx
+    setNotes((preNote) => {                                                              // on peuple l'array notes[] selon une fonction
+      return [...preNote, note];                                                         // qui retourne les valeurs précédantes de note[] et la nouvelle.                  
+    }); 
+   
+    
+  }
+
+  function deleteNote(id){                                                               // quand handleClick() de Notes.jsx est triggée, deleteNote() l'est aussi, elle prend comme param (id)
+     setNotes(prevNotes => {                                                             // on peuple Notes[] par la fonction suivante : 
+       return prevNotes.filter((note, index) => {                                        // est retourné par la méthode .filter() tous les éléments précédants
+         return index !== id;                                                            // dont l'index est différent de l'id de l'item qui a eu sont bouton delete clické. 
+       });
+     });
+    }
+
   return (
     <div>
       <Header />
-      {notes.map((note) => (                                                  // .map() crééer un array à partir d'élements d'un autre array notes[], chaque index de l'array prendra le nom (note)
-        <Note key={note.key} title={note.title} content={note.content} />     // on récupère les data voulu et on les envoit au props. On réitière jusquà la fin du tableau
-      ))}
+      <CreateArea onAdd={addNote} />                                                     {/*props à laquelle sera liée la fonction submitNote() de CreateArea.jsx  */}
+      {notes.map((noteItem, index) => {                                                   // on créer un array à partir de l'array notes[], et on itère
+        return <Note                                                                      // l'objet JS qui y est inscrit dans chacun de ses élements, dans une <Note /> 
+        key={index}                                                                       // la valeur de l'index est récupéré grace au paramètre de la méthode .map()
+        id={index}
+        onDelete={deleteNote}
+        title={noteItem.title} 
+        content={noteItem.content} />;                                                    
+      })}
       <Footer />
     </div>
   );
